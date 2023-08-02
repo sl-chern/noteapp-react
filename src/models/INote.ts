@@ -4,5 +4,5 @@ export interface INote {
   name: string,
   content: string,
   created: Date,
-  archived: Boolean
+  archived: boolean
 }
