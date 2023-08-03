@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import classNames from 'classnames'
 import Table from './Table'
 import TableCell from './TableCell'
@@ -14,14 +15,30 @@ import { FaPencilAlt } from 'react-icons/fa'
 import { BiSolidArchiveIn, BiSolidArchiveOut } from 'react-icons/bi'
 import { getIconByCategory } from '../utils/getIconByCategory'
 import Checkbox from './Checkbox'
-import { changeDisplayParametr, deleteNote, updateNote } from '../redux/slices/NoteSlice'
+import { changeDisplayParametr, createNote, deleteNote, updateNote } from '../redux/slices/NoteSlice'
+import NoteModal from './NoteModal'
+import { NoteSubmitForm } from '../types'
 
-export default function NoteTable() {
+const NoteTable: React.FC = (): React.ReactElement => {
   const showAll: boolean = useAppSelector(state => state.note.all)
   const notes: Array<INote> = useAppSelector(state => showAll ? state.note.notes : state.note.notes.filter((item: INote): boolean => !item.archived))
   const noteButtonStyles: string = 'hover:bg-light-300 hover:bg-opacity-30 rounded-full !p-0 border-none h-7 aspect-square'
 
+  const [creatingVisibility, setCreatingVisibility] = useState(false)
+
   const dispatch = useAppDispatch()
+
+  const createNoteHandler = (data: NoteSubmitForm) => {
+    dispatch(createNote({
+      id: crypto.randomUUID(),
+      category: data.category,
+      name: data.name,
+      content: data.content,
+      created: new Date(),
+      archived: false
+    }))
+    setCreatingVisibility(false)
+  }
 
   return (
     <section className='w-full flex flex-col mt-4 gap-4'>
@@ -53,19 +70,19 @@ export default function NoteTable() {
                 <TableCell>{item.content}</TableCell>
                 <TableCell>{getDatesFromString(item.content)}</TableCell>
                 <TableCell className={classNames('flex flex-row gap-1 justify-end items-center')}>
-                  <Button className={classNames(noteButtonStyles)}>
+                  <Button className={classNames(noteButtonStyles)} type='button'>
                     <FaPencilAlt size={18} className={'text-light-200'}/>
                   </Button>
                   {
                     item.archived
-                      ? <Button className={classNames(noteButtonStyles)} onClick={() => dispatch(updateNote({ id: item.id, note: { ...item, archived: false } }))}>
+                      ? <Button className={classNames(noteButtonStyles)} onClick={() => dispatch(updateNote({ id: item.id, note: { ...item, archived: false } }))} type='button'>
                           <BiSolidArchiveOut size={20} className={'text-light-200'}/>
                         </Button>
-                      : <Button className={classNames(noteButtonStyles)} onClick={() => dispatch(updateNote({ id: item.id, note: { ...item, archived: true } }))}>
+                      : <Button className={classNames(noteButtonStyles)} onClick={() => dispatch(updateNote({ id: item.id, note: { ...item, archived: true } }))} type='button'>
                           <BiSolidArchiveIn size={20} className={'text-light-200'}/>
                         </Button>
                   }
-                  <Button className={classNames(noteButtonStyles)} onClick={() => dispatch(deleteNote(item.id))}>
+                  <Button className={classNames(noteButtonStyles)} onClick={() => dispatch(deleteNote(item.id))} type='button'>
                     <BsFillTrashFill size={20} className={'text-light-200'}/>
                   </Button>
                 </TableCell>
@@ -74,7 +91,16 @@ export default function NoteTable() {
           }
         </TableBody>
       </Table>
-      <Button className={classNames('w-32 mx-auto hover:bg-light-300 hover:text-dark-200')}>Create Note</Button>
+      <Button className={classNames('w-32 mx-auto hover:bg-light-300 hover:text-dark-200')} onClick={() => { setCreatingVisibility(true) }} type='button'>Create Note</Button>
+      <NoteModal 
+        header='Create Note'
+        visibility={creatingVisibility}
+        setVisibility={setCreatingVisibility}
+        buttonLabel='Create'
+        onSubmit={createNoteHandler}
+      />
     </section>
   )
 }
+
+export default NoteTable

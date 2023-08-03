@@ -7,7 +7,7 @@ type TableProps = {
   className?: string
 }
 
-export default function Table({ children, columns = null, className }: TableProps) {
+const Table: React.FC<TableProps> = ({ children, columns = null, className }): React.ReactElement => {
   const context: IContext = { columns }
 
   return (
@@ -18,3 +18,5 @@ export default function Table({ children, columns = null, className }: TableProp
     </Context.Provider>
   )
 }
+
+export default Table

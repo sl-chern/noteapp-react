@@ -12,12 +12,12 @@ import { IOption } from './models/IOption'
 import NoteTable from './components/NoteTable'
 import { getIconByCategory } from './utils/getIconByCategory'
 
-function App() {
+const App: React.FC = (): React.ReactElement => {
   const notes: Array<INote> = useAppSelector(state => state.note.notes)
 
   return (
-    <div className='min-h-screen w-screen bg-dark-400 flex justify-center'>
-      <main className='w-[1280px] flex flex-col mt-4 gap-8'>
+    <div className='min-h-screen w-full bg-dark-400 flex justify-center'>
+      <main className='w-[1280px] flex flex-col py-4 gap-8'>
         <NoteTable />
         
         <section className='w-full flex flex-col mt-4 gap-4'>

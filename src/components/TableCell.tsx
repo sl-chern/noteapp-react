@@ -3,8 +3,10 @@ type TableCellProps = {
   className?: string
 }
 
-export default function TableCell({ children, className }: TableCellProps) {
+const TableCell: React.FC<TableCellProps> = ({ children, className }): React.ReactElement => {
   return (
     <div className={`font-openSans font-semibold line-clamp-1 ${className}`}>{children}</div>
   )
 }
+
+export default TableCell

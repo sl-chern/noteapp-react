@@ -3,7 +3,7 @@ type CheckboxProps = {
   onChange: () => void
 }
 
-export default function Checkbox({ label, onChange }: CheckboxProps) {
+const Checkbox: React.FC<CheckboxProps> = ({ label, onChange }): React.ReactElement => {
   return (
     <label className="font-openSans text-light-300 font-semibold flex items-center gap-2">
       <input className="show-all" type="checkbox" onChange={onChange}/>
@@ -11,3 +11,5 @@ export default function Checkbox({ label, onChange }: CheckboxProps) {
     </label>
   )
 }
+
+export default Checkbox

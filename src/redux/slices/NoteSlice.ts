@@ -27,10 +27,13 @@ export const noteSlice = createSlice({
     deleteNote(state, action: PayloadAction<string>) {
       const noteIndex = state.notes.findIndex((item: INote): boolean => item.id === action.payload)
       state.notes.splice(noteIndex, 1)
+    },
+    createNote(state, action: PayloadAction<INote>) {
+      state.notes.push(action.payload)
     }
   }
 })
 
 export default noteSlice.reducer
 
-export const { changeDisplayParametr, updateNote, deleteNote } = noteSlice.actions
+export const { changeDisplayParametr, updateNote, deleteNote, createNote } = noteSlice.actions
