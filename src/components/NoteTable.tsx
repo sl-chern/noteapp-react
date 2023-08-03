@@ -31,7 +31,7 @@ const NoteTable: React.FC = (): React.ReactElement => {
       setFilteredNotes(notes)
     else
       setFilteredNotes(notes.filter((item: INote): boolean => !item.archived))
-  }, [showAll])
+  }, [showAll, notes])
   
 
   const [creatingVisibility, setCreatingVisibility] = useState(false)
@@ -62,6 +62,7 @@ const NoteTable: React.FC = (): React.ReactElement => {
         content: data.content
       }
     }))
+    setUpdatingVisibility(false)
   }
 
   return (
