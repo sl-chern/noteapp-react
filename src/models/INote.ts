@@ -3,6 +3,6 @@ export interface INote {
   category: string,
   name: string,
   content: string,
-  created: Date,
+  created: string,
   archived: boolean
 }

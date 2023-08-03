@@ -22,6 +22,7 @@ export const noteSlice = createSlice({
     },
     updateNote(state, action: PayloadAction<ChangeNotePaload>) {
       const noteIndex = state.notes.findIndex((item: INote): boolean => item.id === action.payload.id)
+      console.log(noteIndex, action.payload)
       state.notes[noteIndex] = action.payload.note
     },
     deleteNote(state, action: PayloadAction<string>) {

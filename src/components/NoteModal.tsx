@@ -14,25 +14,17 @@ import { NoteSubmitForm } from '../types'
 type NoteModalProps = {
   header: string,
   buttonLabel: string,
-  initialValues?: INote,
+  initialValue?: INote,
   onSubmit: (data: NoteSubmitForm) => void,
   visibility: boolean,
   setVisibility: (newVisibility: boolean) => void
 }
 
-const NoteModal: React.FC<NoteModalProps> = ({header, buttonLabel, initialValues, onSubmit, visibility, setVisibility}): React.ReactNode => {
+const NoteModal: React.FC<NoteModalProps> = ({header, buttonLabel, initialValue, onSubmit, visibility, setVisibility}): React.ReactNode => {
   const { register, handleSubmit, setValue, reset } = useForm<NoteSubmitForm>({
     resolver: yupResolver(schema),
     mode: "onTouched"
   })
-
-  useEffect(() => {
-    if(typeof initialValues !== 'undefined') {
-      setValue('name', initialValues.name)
-      setValue('content', initialValues.content)
-      setValue('category', initialValues.category)
-    }
-  }, [])
 
   useEffect(() => {
     if(!visibility) {
@@ -40,6 +32,11 @@ const NoteModal: React.FC<NoteModalProps> = ({header, buttonLabel, initialValues
       document.body.classList.remove('overflow-hidden', 'h-screen')
     }
     else {
+      if(typeof initialValue !== 'undefined') {
+        setValue('name', initialValue.name)
+        setValue('content', initialValue.content)
+        setValue('category', initialValue.category)
+      }
       document.body.classList.add(classNames('overflow-hidden'), classNames('h-screen'))
     }
   }, [visibility])

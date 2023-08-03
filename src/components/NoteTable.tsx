@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import classNames from 'classnames'
 import Table from './Table'
 import TableCell from './TableCell'
@@ -21,10 +21,22 @@ import { NoteSubmitForm } from '../types'
 
 const NoteTable: React.FC = (): React.ReactElement => {
   const showAll: boolean = useAppSelector(state => state.note.all)
-  const notes: Array<INote> = useAppSelector(state => showAll ? state.note.notes : state.note.notes.filter((item: INote): boolean => !item.archived))
+  const notes: Array<INote> = useAppSelector(state => state.note.notes)
   const noteButtonStyles: string = 'hover:bg-light-300 hover:bg-opacity-30 rounded-full !p-0 border-none h-7 aspect-square'
 
+  const [filteredNotes, setFilteredNotes] = useState<Array<INote>>()
+
+  useEffect(() => {
+    if(showAll)
+      setFilteredNotes(notes)
+    else
+      setFilteredNotes(notes.filter((item: INote): boolean => !item.archived))
+  }, [showAll])
+  
+
   const [creatingVisibility, setCreatingVisibility] = useState(false)
+  const [updatingVisibility, setUpdatingVisibility] = useState(false)
+  const [initialValue, setInitialValue] = useState<INote>()
 
   const dispatch = useAppDispatch()
 
@@ -34,10 +46,22 @@ const NoteTable: React.FC = (): React.ReactElement => {
       category: data.category,
       name: data.name,
       content: data.content,
-      created: new Date(),
+      created: new Date().toLocaleDateString(),
       archived: false
     }))
     setCreatingVisibility(false)
+  }
+
+  const updateNoteHandler = (data: NoteSubmitForm) => {
+    dispatch(updateNote({
+      id: initialValue?.id!,
+      note: {
+        ...initialValue!,
+        name: data.name,
+        category: data.category,
+        content: data.content
+      }
+    }))
   }
 
   return (
@@ -61,16 +85,23 @@ const NoteTable: React.FC = (): React.ReactElement => {
         </TableHead>
         <TableBody>
           {
-            notes.map((item: INote, index: number): React.ReactNode => 
+            filteredNotes?.map((item: INote, index: number): React.ReactNode => 
               <TableRow key={`noterow${index}`}>
                 <TableCell>{getIconByCategory(item.category)}</TableCell>
                 <TableCell>{item.name}</TableCell>
-                <TableCell>{item.created.toLocaleDateString()}</TableCell>
+                <TableCell>{item.created}</TableCell>
                 <TableCell>{item.category}</TableCell>
                 <TableCell>{item.content}</TableCell>
                 <TableCell>{getDatesFromString(item.content)}</TableCell>
                 <TableCell className={classNames('flex flex-row gap-1 justify-end items-center')}>
-                  <Button className={classNames(noteButtonStyles)} type='button'>
+                  <Button 
+                    className={classNames(noteButtonStyles)} 
+                    type='button'
+                    onClick={() => {
+                      setUpdatingVisibility(true)
+                      setInitialValue(notes.find((note: INote): boolean => note.id === item.id))
+                    }}
+                  >
                     <FaPencilAlt size={18} className={'text-light-200'}/>
                   </Button>
                   {
@@ -98,6 +129,14 @@ const NoteTable: React.FC = (): React.ReactElement => {
         setVisibility={setCreatingVisibility}
         buttonLabel='Create'
         onSubmit={createNoteHandler}
+      />
+      <NoteModal 
+        header='Update Note'
+        visibility={updatingVisibility}
+        setVisibility={setUpdatingVisibility}
+        buttonLabel='Update'
+        onSubmit={updateNoteHandler}
+        initialValue={initialValue}
       />
     </section>
   )
