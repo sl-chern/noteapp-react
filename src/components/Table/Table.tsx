@@ -1,13 +1,13 @@
-import { Context } from "../context/context"
-import { IContext } from "../models/IContext"
+import { Context } from "../../context/context"
+import { IContext } from "../../models/IContext"
 
-type TableProps = {
+export type TableProps = {
   children: React.ReactNode,
   columns?: string | null,
   className?: string
 }
 
-const Table: React.FC<TableProps> = ({ children, columns = null, className }): React.ReactElement => {
+export const Table: React.FC<TableProps> = ({ children, columns = null, className }): React.ReactElement => {
   const context: IContext = { columns }
 
   return (
@@ -18,5 +18,3 @@ const Table: React.FC<TableProps> = ({ children, columns = null, className }): R
     </Context.Provider>
   )
 }
-
-export default Table

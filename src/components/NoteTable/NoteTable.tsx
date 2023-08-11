@@ -1,25 +1,25 @@
 import { useState, useEffect } from 'react'
 import classNames from 'classnames'
-import Table from './Table'
-import TableCell from './TableCell'
-import TableHead from './TableHead'
-import TableRow from './TableRow'
-import TableBody from './TableBody'
-import { INote } from '../models/INote'
+import { Table } from '../Table'
+import { TableCell } from '../TableCell'
+import { TableHead } from '../TableHead'
+import { TableRow } from '../TableRow'
+import { TableBody } from '../TableBody'
+import { INote } from '../../models/INote'
 import { HiArchive } from 'react-icons/hi'
 import { BsFillTrashFill } from 'react-icons/bs'
-import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { getDatesFromString } from '../utils/getDatesFromString'
-import { Button } from './Button'
+import { useAppDispatch, useAppSelector } from '../../hooks/redux'
+import { getDatesFromString } from '../../utils/getDatesFromString'
+import { Button } from '../Button'
 import { FaPencilAlt } from 'react-icons/fa'
 import { BiSolidArchiveIn, BiSolidArchiveOut } from 'react-icons/bi'
-import { getIconByCategory } from '../utils/getIconByCategory'
-import Checkbox from './Checkbox'
-import { changeDisplayParametr, createNote, deleteNote, updateNote } from '../redux/slices/NoteSlice'
-import NoteModal from './NoteModal'
-import { NoteSubmitForm } from '../types'
+import { getIconByCategory } from '../../utils/getIconByCategory'
+import { Checkbox } from '../Checkbox'
+import { changeDisplayParametr, createNote, deleteNote, updateNote } from '../../redux/slices/NoteSlice'
+import { NoteModal } from '../NoteModal'
+import { NoteSubmitForm } from '../../types'
 
-const NoteTable: React.FC = (): React.ReactElement => {
+export const NoteTable: React.FC = (): React.ReactElement => {
   const showAll: boolean = useAppSelector(state => state.note.all)
   const notes: Array<INote> = useAppSelector(state => state.note.notes)
   const noteButtonStyles: string = 'hover:bg-light-300 hover:bg-opacity-30 rounded-full !p-0 border-none h-7 aspect-square'
@@ -142,5 +142,3 @@ const NoteTable: React.FC = (): React.ReactElement => {
     </section>
   )
 }
-
-export default NoteTable

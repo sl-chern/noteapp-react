@@ -1,6 +1,11 @@
 import type { Preview } from '@storybook/react'
 import { withThemeByClassName } from '@storybook/addon-styling'
+import { Provider } from 'react-redux'
 import '../src/index.css'
+import { setupStore } from './mockedStore'
+import React from 'react'
+
+const store = setupStore()
 
 const preview: Preview = {
   parameters: {
@@ -24,6 +29,7 @@ const preview: Preview = {
       },
       defaultTheme: 'dark',
     }),
+    (story) => (<Provider store={store}>{story()}</Provider>)
   ],
 };
 

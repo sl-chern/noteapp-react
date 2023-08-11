@@ -9,7 +9,7 @@ import { INote } from './models/INote'
 import classNames from "classnames"
 import { categoriesOptions } from './data/categoriesOptions'
 import { IOption } from './models/IOption'
-import NoteTable from './components/NoteTable'
+import { NoteTable } from './components/NoteTable'
 import { getIconByCategory } from './utils/getIconByCategory'
 
 const App: React.FC = (): React.ReactElement => {

@@ -1,17 +1,17 @@
 import { useEffect } from 'react'
-import { INote } from "../models/INote"
-import Modal from "./Modal"
-import Portal from "./Portal"
+import { INote } from "../../models/INote"
+import { Modal } from "../Modal"
+import { Portal } from "../Portal"
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { schema } from "../data/noteValidationSchema"
-import { categoriesOptions } from '../data/categoriesOptions'
-import { IOption } from '../models/IOption'
-import Button from './Button'
+import { schema } from "../../data/noteValidationSchema"
+import { categoriesOptions } from '../../data/categoriesOptions'
+import { IOption } from '../../models/IOption'
+import { Button } from '../Button'
 import classNames from 'classnames'
-import { NoteSubmitForm } from '../types'
+import { NoteSubmitForm } from '../../types'
 
-type NoteModalProps = {
+export type NoteModalProps = {
   header: string,
   buttonLabel: string,
   initialValue?: INote,
@@ -20,7 +20,7 @@ type NoteModalProps = {
   setVisibility: (newVisibility: boolean) => void
 }
 
-const NoteModal: React.FC<NoteModalProps> = ({header, buttonLabel, initialValue, onSubmit, visibility, setVisibility}): React.ReactNode => {
+export const NoteModal: React.FC<NoteModalProps> = ({header, buttonLabel, initialValue, onSubmit, visibility, setVisibility}): React.ReactNode => {
   const { register, handleSubmit, setValue, reset } = useForm<NoteSubmitForm>({
     resolver: yupResolver(schema),
     mode: "onTouched"
@@ -88,5 +88,3 @@ const NoteModal: React.FC<NoteModalProps> = ({header, buttonLabel, initialValue,
       )
     : null
 }
-
-export default NoteModal

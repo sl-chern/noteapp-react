@@ -1,12 +1,12 @@
 import React from 'react'
 import { RiCloseLine } from 'react-icons/ri'
 
-type ModalProps = {
+export type ModalProps = {
   children: React.ReactNode,
   closeModal: () => void
 }
 
-const Modal: React.FC<ModalProps> = ({ children, closeModal }): React.ReactElement => {
+export const Modal: React.FC<ModalProps> = ({ children, closeModal }): React.ReactElement => {
   return (
     <div className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center">
       <div className="w-full h-full bg-dark-300 absolute top-0 left-0 opacity-30 z-20" onClick={() => closeModal()}></div>
@@ -21,5 +21,3 @@ const Modal: React.FC<ModalProps> = ({ children, closeModal }): React.ReactEleme
     </div>
   )
 }
-
-export default Modal
